@@ -3,29 +3,29 @@
 
 using namespace std;
 
+
+class Some : public Error{
+    public:
+        void dosomething(string key, string value){
+            this->error.add(key, value);
+        }
+};
+
 int main() {
 
-    Error err = Error();
-    Error err2 = Error();
-    Error err3 = Error();
+    Some err = Some();
+    err.dosomething("foo", "bar");
+    err.dosomething("foo", "Bar");
+    Some err2 = Some();
+    err2.dosomething("Bar", "FOO");
 
-    err.addError("foo", "bar");
-    err.addError("foo", "bar");
 
-    err2.addError("foo", "foo");
-    err2.addError("Foo", "Bar");
-
+    if(err.isError()) {
+        cout << err.error_message() << endl;
+    }
     err.mergeAll(err2);
 
     cout << err.error_message() << endl;
-
-    err.mergeAll(err3);
-
-    cout << err.error_message() << endl;
-
-    string s;
-
-    cin >> s;
 
     return 0;
 }
