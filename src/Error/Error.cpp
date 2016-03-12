@@ -5,7 +5,6 @@
 using namespace std;
 
 
-
 void Container::add(const string &key, const string &value) {
     bool added = false;
     auto current = this->_container.begin();
@@ -19,8 +18,8 @@ void Container::add(const string &key, const string &value) {
     if(!added) {
         this->_container.insert(pair<string, set<string>>(key, set<string> {value}));
     }
+    this->_has = true;
 }
-
 
 void Container::merge(const Container & ctr) {
     for(auto p_to_map_element = this->_container.begin(); p_to_map_element != this->_container.end(); p_to_map_element++)
@@ -40,11 +39,11 @@ void Container::merge(const Container & ctr) {
 
 }
 
-std::string Container::toString() const {
+std::string Container::toString(int tabing) const {
     stringstream strm;
 
     for(auto pelemnt = this->_container.begin(); pelemnt != this->_container.end(); pelemnt++){
-        strm << pelemnt->first << " : [";
+        strm << string(tabing,'\t') << pelemnt->first  <<" : [";
         int i = 0;
         for(auto pmessage = pelemnt->second.begin(); pmessage != pelemnt->second.end(); pmessage++){
             if(0 == i){
@@ -59,6 +58,9 @@ std::string Container::toString() const {
     return strm.str();
 }
 
+std::string Container::toString() const {
+    return Container::toString(0);
+}
 
 void Error::mergeAll(const Error &other) {
     this->info.merge(other.info);
@@ -66,3 +68,26 @@ void Error::mergeAll(const Error &other) {
     this->error.merge(other.error);
 }
 
+string Error::toString() const {
+    stringstream s;
+    s << "{" << endl;
+    if(this->info.has()) {
+        s << " Info:" << endl;
+        s << this->info.toString(1);
+    }
+    if(this->warning.has()) {
+        s << " Warning:" << endl;
+        s << this->warning.toString(1);
+    }
+    if(this->error.has()){
+        s << " Error:" << endl;
+        s << this->error.toString(1);
+    }
+    s << "}" << endl;
+    return s.str();
+}
+
+std::ostream & operator<<(std::ostream & strm, Error const & err){
+    strm << err.toString();
+    return strm;
+}

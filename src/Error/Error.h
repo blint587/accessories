@@ -17,6 +17,7 @@ class Container{
     public:
         void add(const std::string&, const std::string&);
         void merge(const Container&);
+        std::string toString(int) const;
         std::string toString() const;
         bool has() const{
             return this->_has;
@@ -52,7 +53,8 @@ class Error {
         }
 
         void mergeAll(const Error &);
-
+        std::string toString() const;
+        friend std::ostream & operator<<(std::ostream &, Error const & );
 };
 
 

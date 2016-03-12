@@ -1,5 +1,5 @@
 #include <iostream>
-#include "Error.h"
+#include "Error/Error.h"
 
 using namespace std;
 
@@ -21,11 +21,11 @@ int main() {
 
 
     if(err.isError()) {
-        cout << err.error_message() << endl;
+        cout << err.toString();
     }
     err.mergeAll(err2);
 
-    cout << err.error_message() << endl;
+    cout << err << endl;
 
     return 0;
 }
